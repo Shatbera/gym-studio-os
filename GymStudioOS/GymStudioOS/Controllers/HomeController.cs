@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using GymStudioOS.Constants;
 using GymStudioOS.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace GymStudioOS.Controllers
 
         public IActionResult Privacy()
         {
+            ViewBag.AppName = AppConstants.APP_NAME;
             return View();
         }
 

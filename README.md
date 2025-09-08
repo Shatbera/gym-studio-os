@@ -106,3 +106,116 @@ A detailed project documentation PDF is included:
    ```bash
    git clone https://github.com/your-username/GymOs.git
    cd GymOs
+
+
+/
+├─ /account/
+│  ├─ login
+│  ├─ register
+│  └─ forgot-password
+├─ /onboarding/
+│  └─ create-gym   (first-time Owner only)
+└─ /{tenant}/
+   ├─ admin/                          (Owner/Manager)
+   │  ├─ dashboard
+   │  ├─ members/
+   │  │  ├─ list
+   │  │  ├─ create
+   │  │  └─ details/{memberId}
+   │  ├─ plans/
+   │  │  ├─ list
+   │  │  ├─ create
+   │  │  └─ edit/{planId}
+   │  ├─ classes/
+   │  │  ├─ templates/list
+   │  │  ├─ templates/create
+   │  │  └─ occurrences/calendar
+   │  ├─ bookings/
+   │  │  └─ by-class/{occurrenceId}
+   │  ├─ payments/
+   │  │  ├─ invoices
+   │  │  └─ transactions
+   │  ├─ reports/
+   │  │  ├─ attendance
+   │  │  ├─ revenue
+   │  │  └─ exports
+   │  ├─ notifications/
+   │  │  ├─ templates
+   │  │  └─ schedules
+   │  ├─ users/
+   │  │  ├─ staff
+   │  │  └─ roles
+   │  └─ settings/
+   │     ├─ gym-profile
+   │     ├─ branding
+   │     └─ payment-integration
+   │
+   ├─ staff/                          (Staff/Coach)
+   │  ├─ today
+   │  ├─ check-in                     (QR/manual)
+   │  ├─ schedule                     (coach’s classes)
+   │  ├─ bookings/by-class/{occurrenceId}
+   │  └─ members/lookup
+   │
+   └─ member/                         (Member)
+      ├─ dashboard
+      ├─ schedule                     (book/cancel; see capacity & waitlist)
+      ├─ my-bookings
+      ├─ memberships                  (active/history; renew)
+      └─ invoices                     (list + PDF)
+
+
+
+flowchart TD
+  A[/Landing/] --> B[Account]
+  B --> B1[Login]
+  B --> B2[Register]
+  A --> C[Onboarding]
+  C --> C1[Create Gym (Owner)]
+  A --> T["/{tenant}/..."]
+
+  subgraph Admin (Owner/Manager)
+    T --> D[Admin Dashboard]
+    D --> E[Members]
+    E --> E1[List]
+    E --> E2[Create]
+    E --> E3[Details]
+    D --> F[Plans]
+    F --> F1[List]
+    F --> F2[Create/Edit]
+    D --> G[Classes]
+    G --> G1[Templates List/Create]
+    G --> G2[Occurrences Calendar]
+    D --> H[Bookings by Class]
+    D --> I[Payments]
+    I --> I1[Invoices]
+    I --> I2[Transactions]
+    D --> J[Reports]
+    J --> J1[Attendance]
+    J --> J2[Revenue]
+    J --> J3[Exports]
+    D --> K[Notifications]
+    K --> K1[Templates]
+    K --> K2[Schedules]
+    D --> L[Users & Roles]
+    D --> M[Settings]
+    M --> M1[Gym Profile]
+    M --> M2[Branding]
+    M --> M3[Payment Integration]
+  end
+
+  subgraph Staff/Coach
+    T --> S[Staff Home (Today)]
+    S --> S1[Check-in (QR/Manual)]
+    S --> S2[Coach Schedule]
+    S --> S3[Bookings by Class]
+    S --> S4[Member Lookup]
+  end
+
+  subgraph Member
+    T --> MB[Member Dashboard]
+    MB --> MB1[Schedule (Book/Cancel)]
+    MB --> MB2[My Bookings]
+    MB --> MB3[Memberships]
+    MB --> MB4[Invoices (PDF)]
+  end
