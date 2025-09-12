@@ -19,6 +19,14 @@ namespace GymStudioOS.Controllers
             _signIn = signIn;
             _users = users;
         }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signIn.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
 
 
         [HttpGet]
@@ -74,12 +82,12 @@ namespace GymStudioOS.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true };
+            var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true};
             var result = await _users.CreateAsync(user, vm.Password);
 
             if (result.Succeeded)
             {
-                await _users.AddToRoleAsync(user, AppRoles.Member);
+                await _users.AddToRoleAsync(user, vm.Role);
                 await _signIn.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }

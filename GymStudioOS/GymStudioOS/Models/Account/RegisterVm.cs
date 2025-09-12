@@ -16,5 +16,6 @@ namespace GymStudioOS.Models.Account
         [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = "";
+        public string Role { get; set; } = AppRoles.Member;
     }
 }

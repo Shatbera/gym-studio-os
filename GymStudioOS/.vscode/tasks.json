@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run .NET Project",
+			"type": "shell",
+			"command": "dotnet run --project GymStudioOS/GymStudioOS.csproj",
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run .NET Project with Hot Reload",
+			"type": "shell",
+			"command": "dotnet watch run --project GymStudioOS/GymStudioOS.csproj",
+			"isBackground": true,
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		}
+	]
+}
