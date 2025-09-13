@@ -1,22 +1,25 @@
 using System.Diagnostics;
 using GymStudioOS.Constants;
 using GymStudioOS.Models;
+using GymStudioOS.Models.Gym.Data;
+using GymStudioOS.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymStudioOS.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+    private readonly IRepository<Gym> _gymRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IRepository<Gym> gymRepository)
         {
-            _logger = logger;
+            _gymRepository = gymRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var gyms = await _gymRepository.GetAllAsync();
+            return View(gyms);
         }
 
         public IActionResult Privacy()

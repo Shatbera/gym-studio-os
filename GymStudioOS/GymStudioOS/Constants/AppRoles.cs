@@ -7,6 +7,7 @@
     public const string Coach = "Coach";
     public const string Member = "Member";
 
+    public const string OwnerOrAdmin = Admin + "," + Owner;
     public const string OwnerOrManager = Admin + "," + Owner + "," + Manager;
     public const string StaffOrAbove = Admin + "," + Owner + "," + Manager + "," + Staff;
     public const string CoachOrAbove = Admin + "," + Owner + "," + Manager + "," + Staff + "," + Coach;
