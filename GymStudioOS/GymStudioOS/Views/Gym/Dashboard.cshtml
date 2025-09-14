@@ -1,0 +1,51 @@
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@using GymStudioOS.Constants;
+@model GymStudioOS.Models.Gym.View.GymDashboardVm
+
+
+<h2>Gym Dashboard</h2>
+<div class="card mb-3">
+	<div class="card-body">
+		<h4>@Model.Gym.Name</h4>
+		<p><strong>Address:</strong> @Model.Gym.Address</p>
+		<p><strong>Phone:</strong> @Model.Gym.Phone</p>
+		<p><strong>Email:</strong> @Model.Gym.Email</p>
+	</div>
+</div>
+<p>Welcome to your gym management dashboard.</p>
+
+
+<h3>Classes</h3>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Duration (min)</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var c in Model.Classes)
+		{
+			<tr>
+				<td>@c.Name</td>
+				<td>@c.DefaultDurationMinutes</td>
+				<td>
+					<a class="btn btn-sm btn-primary" href="@Url.Action("EditClass", "Gym", new { gymId = c.GymId, id = c.Id })">Edit</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<a class="btn btn-success" href="@Url.Action("EditClass", "Gym", new { gymId = Model.Gym.Id })">Add Class</a>
+
+<ul>
+	<li><a href="#">Manage Memberships</a></li>
+	<li><a href="#">Register Members</a></li>
+	<li><a href="#">Register Staff</a></li>
+</ul>

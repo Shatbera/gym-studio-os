@@ -36,7 +36,8 @@ namespace GymStudioOS
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.AddScoped<IRepository<Gym>, GymRepository>();
+            builder.Services.AddScoped<IRepository<Gym>, Repository<Gym>>();
+            builder.Services.AddScoped<IRepository<Class>, Repository<Class>>();
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();

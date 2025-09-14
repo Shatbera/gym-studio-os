@@ -7,6 +7,7 @@ namespace GymStudioOS.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Gym> Gyms { get; set; }
+        public DbSet<Class> Classes { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

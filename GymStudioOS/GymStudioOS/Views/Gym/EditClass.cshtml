@@ -1,0 +1,18 @@
+@model GymStudioOS.Models.Gym.View.ClassVm
+
+<h2>@(Model?.Id > 0 ? "Edit Class" : "Add Class")</h2>
+
+<form asp-action="@(Model?.Id > 0 ? "EditClass" : "CreateClass")" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DefaultDurationMinutes"></label>
+        <input asp-for="DefaultDurationMinutes" class="form-control" />
+        <span asp-validation-for="DefaultDurationMinutes" class="text-danger"></span>
+    </div>
+    <input type="hidden" name="gymId" value="@ViewBag.GymId" />
+    <button type="submit" class="btn btn-primary">@(Model?.Id > 0 ? "Update" : "Add")</button>
+</form>
