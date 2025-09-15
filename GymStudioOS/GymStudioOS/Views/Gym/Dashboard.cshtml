@@ -35,7 +35,12 @@
 				<td>@c.Name</td>
 				<td>@c.DefaultDurationMinutes</td>
 				<td>
-					<a class="btn btn-sm btn-primary" href="@Url.Action("EditClass", "Gym", new { gymId = c.GymId, id = c.Id })">Edit</a>
+					<a class="btn btn-sm btn-primary" href="@Url.Action("EditClass", "Gym", new { gymId = c.GymId, classId = c.Id })">Edit</a>
+					<form asp-action="DeleteClass" asp-controller="Gym" method="post" style="display:inline;">
+						<input type="hidden" name="gymId" value="@c.GymId" />
+						<input type="hidden" name="classId" value="@c.Id" />
+						<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this class?');">Delete</button>
+					</form>
 				</td>
 			</tr>
 		}
