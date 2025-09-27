@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.ComponentModel.DataAnnotations;
+using GymStudioOS.Data;
 
 namespace GymStudioOS.Models.Gym.Data
 {
@@ -15,7 +16,7 @@ namespace GymStudioOS.Models.Gym.Data
 
         public int TrainerId { get; set; }
         [ForeignKey(nameof(TrainerId))]
-        public Staff? Trainer { get; set; }
+        public ApplicationUser? Trainer { get; set; }
 
         
         [Required]

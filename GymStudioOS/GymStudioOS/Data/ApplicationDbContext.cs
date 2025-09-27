@@ -8,6 +8,7 @@ namespace GymStudioOS.Data
     {
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<Class> Classes { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -16,5 +17,6 @@ namespace GymStudioOS.Data
         protected ApplicationDbContext()
         {
         }
+
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using GymStudioOS.Data;
 
 namespace GymStudioOS.Models.Gym.Data
 {
@@ -18,9 +19,9 @@ namespace GymStudioOS.Models.Gym.Data
         [Required]
         public int MemberId { get; set; }
         [ForeignKey(nameof(MemberId))]
-        public Member? Member { get; set; }
+        public ApplicationUser? Member { get; set; }
 
-        [Required]
+        [Required]//577531304
         public int MembershipPlanId { get; set; }
         [ForeignKey(nameof(MembershipPlanId))]
         public MembershipPlan? MembershipPlan { get; set; }

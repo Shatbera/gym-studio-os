@@ -1,4 +1,6 @@
-﻿@model GymStudioOS.Models.Account.RegisterVm
+﻿
+@using GymStudioOS.Constants
+@model GymStudioOS.Models.Account.RegisterVm
 
 @{
     ViewData["Title"] = "Register";
@@ -30,8 +32,8 @@
     <div class="mb-3">
         <label asp-for="Role" class="form-label"></label>
         <select asp-for="Role" class="form-select">
-            <option value="Member">Member</option>
-            <option value="Admin">Admin</option>
+            <option value="@AppRoles.User">@AppRoles.User</option>
+            <option value="@AppRoles.Owner">@AppRoles.Owner</option>
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>

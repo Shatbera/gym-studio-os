@@ -1,6 +1,8 @@
 ﻿using GymStudioOS.Constants;
 using GymStudioOS.Data;
 using GymStudioOS.Models.Account;
+using GymStudioOS.Models.Gym.Data;
+using GymStudioOS.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,15 +11,18 @@ namespace GymStudioOS.Controllers
     public class AccountController : Controller
     {
 
-        private readonly SignInManager<ApplicationUser> _signIn;
-        private readonly UserManager<ApplicationUser> _users;
+    private readonly SignInManager<ApplicationUser> _signIn;
+    private readonly UserManager<ApplicationUser> _users;
+    private readonly IRepository<UserProfile> _userRepository;
 
         public AccountController(
             SignInManager<ApplicationUser> signIn,
-            UserManager<ApplicationUser> users)
+            UserManager<ApplicationUser> users,
+            IRepository<UserProfile> userRepository)
         {
             _signIn = signIn;
             _users = users;
+            _userRepository = userRepository;
         }
         
         [HttpPost]
@@ -88,6 +93,13 @@ namespace GymStudioOS.Controllers
             if (result.Succeeded)
             {
                 await _users.AddToRoleAsync(user, vm.Role);
+                var userProfile = new UserProfile
+                {
+                    UserId = user.Id,
+                    Email = user.Email,
+                };
+                await _userRepository.AddAsync(userProfile);
+                await _users.UpdateAsync(user);
                 await _signIn.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }

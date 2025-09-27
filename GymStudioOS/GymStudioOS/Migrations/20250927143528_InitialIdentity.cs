@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GymStudioOS.Migrations
 {
     /// <inheritdoc />
-    public partial class InitIdentity : Migration
+    public partial class InitialIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -156,6 +156,74 @@ namespace GymStudioOS.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Gyms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gyms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Gyms_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserProfiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Classes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DefaultDurationMinutes = table.Column<int>(type: "int", nullable: false),
+                    GymId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Classes_Gyms_GymId",
+                        column: x => x.GymId,
+                        principalTable: "Gyms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +262,21 @@ namespace GymStudioOS.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classes_GymId",
+                table: "Classes",
+                column: "GymId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gyms_OwnerId",
+                table: "Gyms",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserProfiles_UserId",
+                table: "UserProfiles",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -215,7 +298,16 @@ namespace GymStudioOS.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Classes");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Gyms");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

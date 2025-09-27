@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace GymStudioOS.Repositories
 {
     public interface IRepository<T> where T : class
@@ -7,5 +9,6 @@ namespace GymStudioOS.Repositories
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);
+        Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     }
 }

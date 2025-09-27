@@ -1,4 +1,5 @@
 
+using System.Linq.Expressions;
 using GymStudioOS.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,6 +49,11 @@ namespace GymStudioOS.Repositories
 				_dbSet.Remove(entity);
 				await _context.SaveChangesAsync();
 			}
+		}
+
+		public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+		{
+			return await _dbSet.FirstOrDefaultAsync(predicate);
 		}
 	}
 }
