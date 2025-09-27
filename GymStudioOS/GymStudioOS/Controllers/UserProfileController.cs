@@ -48,6 +48,7 @@ namespace GymStudioOS.Controllers
                 LastName = profile.LastName,
                 Email = email,
                 Phone = profile.Phone,
+                PersonalId = profile.PersonalId,
                 Bio = profile.Bio,
                 UserId = profile.UserId
             };

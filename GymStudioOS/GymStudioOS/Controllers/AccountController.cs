@@ -87,7 +87,7 @@ namespace GymStudioOS.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true};
+            var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true };
             var result = await _users.CreateAsync(user, vm.Password);
 
             if (result.Succeeded)
@@ -97,6 +97,10 @@ namespace GymStudioOS.Controllers
                 {
                     UserId = user.Id,
                     Email = user.Email,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Phone = vm.Phone,
+                    PersonalId = vm.PersonalId,
                 };
                 await _userRepository.AddAsync(userProfile);
                 await _users.UpdateAsync(user);

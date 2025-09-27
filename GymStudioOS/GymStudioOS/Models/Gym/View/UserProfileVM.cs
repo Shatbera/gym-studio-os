@@ -18,6 +18,8 @@ namespace GymStudioOS.Models.Gym.View
 
         [MaxLength(20)]
         public string? Phone { get; set; }
+        [MaxLength(20)]
+        public string? PersonalId { get; set; }
 
         [MaxLength(500)]
         public string? Bio { get; set; }

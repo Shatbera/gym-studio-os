@@ -22,6 +22,8 @@ namespace GymStudioOS.Models.Gym.Data
 
         [MaxLength(20)]
         public string? Phone { get; set; }
+        [MaxLength(20)]
+        public string? PersonalId { get; set; }
 
         [MaxLength(500)]
         public string? Bio { get; set; }
