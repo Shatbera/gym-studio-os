@@ -39,6 +39,8 @@ namespace GymStudioOS
             builder.Services.AddScoped<IRepository<Gym>, Repository<Gym>>();
             builder.Services.AddScoped<IRepository<Class>, Repository<Class>>();
             builder.Services.AddScoped<IRepository<UserProfile>, Repository<UserProfile>>();
+            builder.Services.AddScoped<IRepository<GymUserRole>, Repository<GymUserRole>>();
+            builder.Services.AddScoped<IRepository<GymBranch>, Repository<GymBranch>>();
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();

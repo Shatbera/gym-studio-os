@@ -1,0 +1,32 @@
+@model GymStudioOS.Models.Gym.View.GymBranchVm
+
+<h2>@(Model.Id == 0 ? "Create Branch" : "Edit Branch")</h2>
+
+<form asp-action="@(Model.Id == 0 ? "CreateBranch" : "EditBranch")" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="GymId" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        @(Model.Id == 0 ? "Create" : "Save Changes")
+    </button>
+    <a asp-action="ManageBranches" asp-route-gymId="@Model.GymId" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

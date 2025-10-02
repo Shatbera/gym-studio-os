@@ -9,21 +9,20 @@ namespace GymStudioOS.Models.Gym.Data
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(50)]
-        public string? FirstName { get; set; }
+        [Required, MaxLength(50)]
+        public string FirstName { get; set; }
 
-        [MaxLength(50)]
-        public string? LastName { get; set; }
+        [Required, MaxLength(50)]
+        public string LastName { get; set; }
 
-        [MaxLength(100)]
-        [EmailAddress]
-        public string? Email { get; set; }
+        [Required, MaxLength(100), EmailAddress]
+        public string Email { get; set; }
         
 
-        [MaxLength(20)]
-        public string? Phone { get; set; }
-        [MaxLength(20)]
-        public string? PersonalId { get; set; }
+        [Required, MaxLength(20)]
+        public string Phone { get; set; }
+        [Required, MaxLength(20)]
+        public string PersonalId { get; set; }
 
         [MaxLength(500)]
         public string? Bio { get; set; }

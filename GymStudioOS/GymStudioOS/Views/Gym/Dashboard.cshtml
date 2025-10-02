@@ -1,4 +1,3 @@
-
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -7,10 +6,10 @@
 
 
 <h2>Gym Dashboard</h2>
+<p><strong>Gym ID:</strong> @Model.Gym.Id</p>
 <div class="card mb-3">
 	<div class="card-body">
 		<h4>@Model.Gym.Name</h4>
-		<p><strong>Address:</strong> @Model.Gym.Address</p>
 		<p><strong>Phone:</strong> @Model.Gym.Phone</p>
 		<p><strong>Email:</strong> @Model.Gym.Email</p>
 	</div>
@@ -51,6 +50,7 @@
 
 <ul>
 	<li><a href="#">Manage Memberships</a></li>
-	<li><a href="#">Register Members</a></li>
+	<li><a asp-controller="Gym" asp-action="ManageBranches" asp-route-gymId="@Model.Gym.Id">Manage Branches</a></li>
+	<li><a asp-controller="UserProfile" asp-action="RegisterMember" asp-route-gymId="@Model.Gym.Id">Register Members</a></li>
 	<li><a href="#">Register Staff</a></li>
 </ul>

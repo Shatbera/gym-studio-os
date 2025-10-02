@@ -1,0 +1,32 @@
+@model IEnumerable<GymStudioOS.Models.Gym.View.GymBranchVm>
+
+<h2>Manage Branches</h2>
+<a class="btn btn-success mb-3" href="@Url.Action("EditBranch", "Gym", new { branchId = 0, gymId = ViewBag.GymId })">Add Branch</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var branch in Model)
+        {
+            <tr>
+                <td>@branch.Name</td>
+                <td>@branch.Address</td>
+                <td>@branch.Phone</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("EditBranch", "Gym", new { branchId = branch.Id, gymId = ViewBag.GymId })">Edit</a>
+                    <form asp-action="DeleteBranch" asp-controller="Gym" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this branch?');">
+                        <input type="hidden" name="branchId" value="@branch.Id" />
+                        <input type="hidden" name="gymId" value="@branch.GymId" />
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

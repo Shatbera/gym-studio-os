@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymStudioOS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250927143528_InitialIdentity")]
-    partial class InitialIdentity
+    [Migration("20251001194531_AddGymBranchSupport")]
+    partial class AddGymBranchSupport
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,10 +123,6 @@ namespace GymStudioOS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -150,6 +146,68 @@ namespace GymStudioOS.Migrations
                     b.ToTable("Gyms");
                 });
 
+            modelBuilder.Entity("GymStudioOS.Models.Gym.Data.GymBranch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GymId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GymId");
+
+                    b.ToTable("GymBranches");
+                });
+
+            modelBuilder.Entity("GymStudioOS.Models.Gym.Data.GymUserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GymId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GymId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GymUserRoles");
+                });
+
             modelBuilder.Entity("GymStudioOS.Models.Gym.Data.UserProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -163,18 +221,27 @@ namespace GymStudioOS.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("PersonalId")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -327,7 +394,7 @@ namespace GymStudioOS.Migrations
                     b.HasOne("GymStudioOS.Models.Gym.Data.Gym", "Gym")
                         .WithMany()
                         .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Gym");
@@ -344,12 +411,42 @@ namespace GymStudioOS.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("GymStudioOS.Models.Gym.Data.GymBranch", b =>
+                {
+                    b.HasOne("GymStudioOS.Models.Gym.Data.Gym", "Gym")
+                        .WithMany()
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gym");
+                });
+
+            modelBuilder.Entity("GymStudioOS.Models.Gym.Data.GymUserRole", b =>
+                {
+                    b.HasOne("GymStudioOS.Models.Gym.Data.Gym", "Gym")
+                        .WithMany()
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GymStudioOS.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Gym");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GymStudioOS.Models.Gym.Data.UserProfile", b =>
                 {
                     b.HasOne("GymStudioOS.Data.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");

@@ -1,0 +1,151 @@
+@using GymStudioOS.Constants
+@model GymStudioOS.Models.Gym.View.RegisterMemberVm
+
+@{
+	ViewData["Title"] = "Register Member";
+}
+
+<h2>Register or Add Member</h2>
+<p><strong>Gym ID:</strong> @Model.GymId</p>
+
+<form asp-action="RegisterMember" method="post">
+	@Html.AntiForgeryToken()
+
+	<div class="mb-3">
+		<label for="searchTerm" class="form-label">Search User (Email, Personal ID)</label>
+		<input type="text" name="searchTerm" id="searchTerm" class="form-control" value="@Model.SearchTerm" />
+
+		<div class="mt-2">
+			<button type="submit" name="action" value="search" class="btn btn-secondary" formnovalidate>
+				Search
+			</button>
+
+			<button type="submit" name="action" value="showRegister" class="btn btn-outline-success ms-2"
+				formnovalidate>
+				Create New User
+			</button>
+		</div>
+	</div>
+
+	<input type="hidden" name="GymId" value="@Model.GymId" />
+
+	@if (Model.FoundUser != null)
+	{
+		<div class="alert alert-success">User found:</div>
+
+
+		<dl class="row">
+			<dt class="col-sm-3">Name</dt>
+			<dd class="col-sm-9">@Model.FoundUser.FirstName @Model.FoundUser.LastName</dd>
+
+			<dt class="col-sm-3">Email</dt>
+			<dd class="col-sm-9">@Model.FoundUser.Email</dd>
+
+			<dt class="col-sm-3">Personal ID</dt>
+			<dd class="col-sm-9">@Model.FoundUser.PersonalId</dd>
+		</dl>
+
+		<!-- Hidden fields for FoundUser properties -->
+		<input type="hidden" name="FoundUser.Id" value="@Model.FoundUser.Id" />
+		<input type="hidden" name="FoundUser.FirstName" value="@Model.FoundUser.FirstName" />
+		<input type="hidden" name="FoundUser.LastName" value="@Model.FoundUser.LastName" />
+		<input type="hidden" name="FoundUser.Email" value="@Model.FoundUser.Email" />
+		<input type="hidden" name="FoundUser.Phone" value="@Model.FoundUser.Phone" />
+		<input type="hidden" name="FoundUser.PersonalId" value="@Model.FoundUser.PersonalId" />
+		<input type="hidden" name="FoundUser.Bio" value="@Model.FoundUser.Bio" />
+		<input type="hidden" name="FoundUser.UserId" value="@Model.FoundUser.UserId" />
+
+		<div class="mb-3">
+			<label for="SelectedRole" class="form-label">Assign Role</label>
+			<select name="SelectedRole" id="SelectedRole" class="form-select">
+				<option value="@GymRoles.Member">@GymRoles.Member</option>
+				<option value="@GymRoles.Manager">@GymRoles.Manager</option>
+				<option value="@GymRoles.Trainer">@GymRoles.Trainer</option>
+				<option value="@GymRoles.Receptionist">@GymRoles.Receptionist</option>
+			</select>
+		</div>
+
+		<button type="submit" name="action" value="assign" class="btn btn-primary" formnovalidate>
+			Assign Role
+		</button>
+	}
+	else if (Model.FoundUser == null && Model.ShowRegisterForm)
+	{
+		if (Model.SearchPerformed)
+		{
+			<div class="alert alert-warning">No user found. Register new user below:</div>
+		}
+
+		<div class="mb-3">
+			<label asp-for="NewUser.FirstName" class="form-label"></label>
+			<input asp-for="NewUser.FirstName" class="form-control" />
+			<span asp-validation-for="NewUser.FirstName" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="NewUser.LastName" class="form-label"></label>
+			<input asp-for="NewUser.LastName" class="form-control" />
+			<span asp-validation-for="NewUser.LastName" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="NewUser.Email" class="form-label"></label>
+			<input asp-for="NewUser.Email" class="form-control" />
+			<span asp-validation-for="NewUser.Email" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="NewUser.Phone" class="form-label"></label>
+			<input asp-for="NewUser.Phone" class="form-control" />
+			<span asp-validation-for="NewUser.Phone" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="NewUser.PersonalId" class="form-label"></label>
+			<input asp-for="NewUser.PersonalId" class="form-control" />
+			<span asp-validation-for="NewUser.PersonalId" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label for="SelectedRole" class="form-label">Assign Role</label>
+			<select name="SelectedRole" id="SelectedRole" class="form-select">
+				<option value="@GymRoles.Member">@GymRoles.Member</option>
+				<option value="@GymRoles.Manager">@GymRoles.Manager</option>
+				<option value="@GymRoles.Trainer">@GymRoles.Trainer</option>
+				<option value="@GymRoles.Receptionist">@GymRoles.Receptionist</option>
+			</select>
+		</div>
+
+		<button type="submit" name="action" value="register" class="btn btn-success js-validate-submit">
+			Register &amp; Assign Role
+		</button>
+	}
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+
+	<script>
+		// Only run client-side validation when the submit button has .js-validate-submit
+		$(function () {
+			var shouldValidate = false;
+
+			$('form[method="post"] button[type="submit"]').on('click', function () {
+				shouldValidate = $(this).hasClass('js-validate-submit');
+			});
+
+			$('form[method="post"]').on('submit', function () {
+				var $form = $(this);
+				var validator = $form.data('validator') || $form.validate(); // ensure validator exists
+
+				if (!shouldValidate) {
+					var prevIgnore = validator.settings.ignore;
+					validator.settings.ignore = "*"; // temporarily ignore everything
+					setTimeout(function () { validator.settings.ignore = prevIgnore || ":hidden"; }, 0);
+				}
+				// If shouldValidate is true, normal unobtrusive validation runs
+				return true;
+			});
+		});
+	</script>
+}
