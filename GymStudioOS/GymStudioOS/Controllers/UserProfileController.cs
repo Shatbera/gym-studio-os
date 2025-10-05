@@ -6,6 +6,7 @@ using GymStudioOS.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymStudioOS.Controllers
 {
@@ -14,14 +15,21 @@ namespace GymStudioOS.Controllers
     {
         private readonly IRepository<UserProfile> _userProfileRepository;
         private readonly IRepository<GymUserRole> _gymUserRoleRepository;
+        private readonly IRepository<GymBranch> _gymBranchRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly ILogger<UserProfileController> _logger;
 
-        public UserProfileController(IRepository<UserProfile> userProfileRepository, IRepository<GymUserRole> gymUserRoleRepository, UserManager<ApplicationUser> userManager, ILogger<UserProfileController> logger)
+        public UserProfileController(
+            IRepository<UserProfile> userProfileRepository,
+            IRepository<GymUserRole> gymUserRoleRepository,
+            IRepository<GymBranch> gymBranchRepository,
+            UserManager<ApplicationUser> userManager,
+            ILogger<UserProfileController> logger)
         {
             _userProfileRepository = userProfileRepository;
             _gymUserRoleRepository = gymUserRoleRepository;
+            _gymBranchRepository = gymBranchRepository;
             _userManager = userManager;
             _logger = logger;
         }
@@ -108,6 +116,9 @@ namespace GymStudioOS.Controllers
         public async Task<IActionResult> RegisterMember(int gymId)
         {
             var vm = new RegisterMemberVm { GymId = gymId };
+            var branches = (await _gymBranchRepository.GetAllAsync()).Where(b => b.GymId == gymId)
+                .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList();
+            ViewBag.Branches = branches;
             return View(vm);
         }
 
@@ -115,6 +126,9 @@ namespace GymStudioOS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterMember(RegisterMemberVm model, string action)
         {
+            var branches = (await _gymBranchRepository.GetAllAsync()).Where(b => b.GymId == model.GymId)
+                .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList();
+            ViewBag.Branches = branches;
             _logger.LogInformation($"RegisterMember POST: GymId={model.GymId}");
             // Handle search
             if (action == "search")
@@ -157,9 +171,6 @@ namespace GymStudioOS.Controllers
             // Register new user and assign role
             if (action == "register")
             {
-                // TODO: Implement registration logic
-                // Use model.NewUser and newRole
-                // After registration, redirect or show confirmation
                 var user = new ApplicationUser { UserName = model.NewUser.Email, Email = model.NewUser.Email, EmailConfirmed = true };
                 var result = await _userManager.CreateAsync(user, model.NewUser.PersonalId);
                 if (result.Succeeded)
@@ -176,12 +187,12 @@ namespace GymStudioOS.Controllers
                         Bio = model.NewUser.Bio
                     };
                     await _userProfileRepository.AddAsync(userProfile);
-                    // Optionally, create a GymUserRole entry
                     var gymUserRole = new GymUserRole
                     {
                         UserId = user.Id,
                         Role = model.SelectedRole,
                         GymId = model.GymId,
+                        BranchId = model.SelectedRole == GymRoles.Member ? null : model.BranchId
                     };
                     await _gymUserRoleRepository.AddAsync(gymUserRole);
                 }
@@ -200,22 +211,26 @@ namespace GymStudioOS.Controllers
             // Assign role to found user
             if (action == "assign")
             {
-                // TODO: Implement role assignment logic
-                // Use model.FoundUser and role
-                // After assignment, redirect or show confirmation
                 if (model.FoundUser == null)
                 {
                     ModelState.AddModelError(string.Empty, "No user selected to assign role.");
                     _logger.LogWarning("Assign POST: No user selected to assign role.");
                     return View(model);
                 }
-                if (model.SelectedRole != null && model.FoundUser != null && await _gymUserRoleRepository.GetFirstOrDefaultAsync(gur => gur.GymId == model.GymId && gur.UserId == model.FoundUser.UserId && gur.Role == model.SelectedRole) == null)
+                if (model.SelectedRole != null && model.FoundUser != null &&
+                    await _gymUserRoleRepository.GetFirstOrDefaultAsync(gur =>
+                        gur.GymId == model.GymId &&
+                        gur.UserId == model.FoundUser.UserId &&
+                        gur.Role == model.SelectedRole &&
+                        (gur.BranchId == (model.SelectedRole == GymRoles.Member ? null : model.BranchId))
+                    ) == null)
                 {
                     var gymUserRole = new GymUserRole
                     {
                         UserId = model.FoundUser.UserId,
                         Role = model.SelectedRole,
                         GymId = model.GymId,
+                        BranchId = model.SelectedRole == GymRoles.Member ? null : model.BranchId
                     };
                     _logger.LogInformation($"Assign POST: Assigned role '{model.SelectedRole}' to userId={model.FoundUser.UserId} for gymId={model.GymId}");
                     await _gymUserRoleRepository.AddAsync(gymUserRole);

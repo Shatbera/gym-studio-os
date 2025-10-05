@@ -12,6 +12,7 @@ namespace GymStudioOS.Models.Gym.View
         // If found, user info
         public string SelectedRole { get; set; } = string.Empty;
         public int GymId { get; set; }
+        public int? BranchId { get; set; }
         public UserProfileVM? FoundUser { get; set; }
         // For new user registration
         public UserProfileVM NewUser { get; set; } = new UserProfileVM();

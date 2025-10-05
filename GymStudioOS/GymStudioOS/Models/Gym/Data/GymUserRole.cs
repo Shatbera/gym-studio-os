@@ -24,5 +24,10 @@ namespace GymStudioOS.Models.Gym.Data
         public string Role { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
+
+        // Optional: Branch assignment (nullable, for gym-wide roles)
+        public int? BranchId { get; set; }
+        [ForeignKey(nameof(BranchId))]
+        public GymBranch? Branch { get; set; }
     }
 }

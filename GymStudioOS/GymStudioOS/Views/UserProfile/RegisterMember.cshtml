@@ -3,6 +3,7 @@
 
 @{
 	ViewData["Title"] = "Register Member";
+	var branches = ViewBag.Branches as List<SelectListItem>;
 }
 
 <h2>Register or Add Member</h2>
@@ -57,11 +58,25 @@
 
 		<div class="mb-3">
 			<label for="SelectedRole" class="form-label">Assign Role</label>
-			<select name="SelectedRole" id="SelectedRole" class="form-select">
+			<select name="SelectedRole" id="SelectedRole" class="form-select" onchange="toggleBranchDropdown()">
 				<option value="@GymRoles.Member">@GymRoles.Member</option>
 				<option value="@GymRoles.Manager">@GymRoles.Manager</option>
 				<option value="@GymRoles.Trainer">@GymRoles.Trainer</option>
 				<option value="@GymRoles.Receptionist">@GymRoles.Receptionist</option>
+			</select>
+		</div>
+
+		<div class="mb-3" id="branchDropdownContainer">
+			<label for="BranchId" class="form-label">Assign Branch</label>
+			<select name="BranchId" id="BranchId" class="form-select">
+				<option value="">-- All Branches --</option>
+				@if (branches != null)
+				{
+					foreach (var branch in branches)
+					{
+						<option value="@branch.Value">@branch.Text</option>
+					}
+				}
 			</select>
 		</div>
 
@@ -108,11 +123,25 @@
 
 		<div class="mb-3">
 			<label for="SelectedRole" class="form-label">Assign Role</label>
-			<select name="SelectedRole" id="SelectedRole" class="form-select">
+			<select name="SelectedRole" id="SelectedRole" class="form-select" onchange="toggleBranchDropdown()">
 				<option value="@GymRoles.Member">@GymRoles.Member</option>
 				<option value="@GymRoles.Manager">@GymRoles.Manager</option>
 				<option value="@GymRoles.Trainer">@GymRoles.Trainer</option>
 				<option value="@GymRoles.Receptionist">@GymRoles.Receptionist</option>
+			</select>
+		</div>
+
+		<div class="mb-3" id="branchDropdownContainer">
+			<label for="BranchId" class="form-label">Assign Branch</label>
+			<select name="BranchId" id="BranchId" class="form-select">
+				<option value="">-- All Branches --</option>
+				@if (branches != null)
+				{
+					foreach (var branch in branches)
+					{
+						<option value="@branch.Value">@branch.Text</option>
+					}
+				}
 			</select>
 		</div>
 
@@ -126,26 +155,18 @@
 	<partial name="_ValidationScriptsPartial" />
 
 	<script>
-		// Only run client-side validation when the submit button has .js-validate-submit
-		$(function () {
-			var shouldValidate = false;
-
-			$('form[method="post"] button[type="submit"]').on('click', function () {
-				shouldValidate = $(this).hasClass('js-validate-submit');
-			});
-
-			$('form[method="post"]').on('submit', function () {
-				var $form = $(this);
-				var validator = $form.data('validator') || $form.validate(); // ensure validator exists
-
-				if (!shouldValidate) {
-					var prevIgnore = validator.settings.ignore;
-					validator.settings.ignore = "*"; // temporarily ignore everything
-					setTimeout(function () { validator.settings.ignore = prevIgnore || ":hidden"; }, 0);
-				}
-				// If shouldValidate is true, normal unobtrusive validation runs
-				return true;
-			});
+		function toggleBranchDropdown() {
+			var role = document.getElementById('SelectedRole').value;
+			var branchDropdown = document.getElementById('branchDropdownContainer');
+			if (role === '@GymRoles.Member') {
+				branchDropdown.style.display = 'none';
+			} else {
+				branchDropdown.style.display = '';
+			}
+		}
+		// Initial call on page load
+		document.addEventListener('DOMContentLoaded', function () {
+			toggleBranchDropdown();
 		});
 	</script>
 }
