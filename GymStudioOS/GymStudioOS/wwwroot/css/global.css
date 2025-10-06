@@ -1,0 +1,384 @@
+/* ---------- 1. Light theme variables ---------- */
+:root {
+  --font-size: 16px;
+
+  --background: #ffffff;
+  --foreground: #1f2937;
+
+  --card: #ffffff;
+  --card-foreground: #1f2937;
+
+  --primary: #0EA5E9;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1f2937;
+
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+
+  --accent: #22C55E;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --input-background: #ffffff;
+  --switch-background: #e2e8f0;
+
+  --radius: 1rem;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1f2937;
+  --sidebar-primary: #0EA5E9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #1f2937;
+  --sidebar-border: #e2e8f0;
+}
+
+/* ---------- 2. Dark theme overrides ---------- */
+.dark {
+  --background: #0F172A;
+  --foreground: #f1f5f9;
+
+  --card: #111827;
+  --card-foreground: #f1f5f9;
+
+  --primary: #0EA5E9;
+  --primary-foreground: #ffffff;
+
+  --secondary: #1F2937;
+  --secondary-foreground: #f1f5f9;
+
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+
+  --accent: #22C55E;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #374151;
+  --input: #1F2937;
+  --input-background: #1F2937;
+  --switch-background: #374151;
+
+  --sidebar: #0B1220;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #0EA5E9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1F2937;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: #374151;
+}
+
+/* ---------- 3. Base layout ---------- */
+html {
+  font-size: var(--font-size);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* ---------- 4. Common elements ---------- */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1rem; }
+
+p, label, button, input {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--foreground);
+}
+
+/* ---------- 5. Utility classes ---------- */
+
+/* Cards / containers */
+.card {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--foreground);
+  color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+  background-color: #0284c7;
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+}
+
+/* Accent buttons */
+.btn-accent {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-accent:hover {
+  background-color: #16a34a;
+}
+
+/* Inputs */
+input, select, textarea {
+  background-color: var(--input-background);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--foreground);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--primary);
+  border-color: var(--primary);
+}
+
+/* Sidebar / Navbar */
+.sidebar {
+  background-color: var(--sidebar);
+  color: var(--sidebar-foreground);
+  border-right: 1px solid var(--sidebar-border);
+  width: 260px;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.sidebar a {
+  color: var(--sidebar-foreground);
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  transition: background 0.15s;
+}
+
+.sidebar a:hover {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+.sidebar a.active {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  font-weight: 500;
+}
+
+/* Muted text */
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+/* Cards grid example */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+/* ---------- 6. Dark mode demo ---------- */
+/* To activate dark mode globally, add <html class="dark"> in _Layout.cshtml */
+
+/* ---------- 7. Sidebar Layout ---------- */
+.sidebar-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  background-color: var(--sidebar);
+  color: var(--sidebar-foreground);
+  border-right: 1px solid var(--sidebar-border);
+  width: 260px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar-brand {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--sidebar-foreground);
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.sidebar-footer {
+  padding: 0.5rem;
+  border-top: 1px solid var(--sidebar-border);
+  margin-top: auto;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.sidebar-menu-item {
+  position: relative;
+}
+
+.sidebar-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  color: var(--sidebar-foreground);
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.sidebar-menu-button:hover {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+.sidebar-menu-button.active {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+.sidebar-menu-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.sidebar-menu-button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-separator {
+  height: 1px;
+  background-color: var(--sidebar-border);
+  margin: 0.75rem 0;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.main-content main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.main-content footer {
+  margin-top: auto;
+  padding: 1rem 2rem;
+}
+
+/* Responsive sidebar for mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
