@@ -2,6 +2,6 @@
 {
     public static class AppConstants
     {
-        public const string APP_NAME = "AthletiQ";
+        public const string APP_NAME = "Corely";
     }
 }
