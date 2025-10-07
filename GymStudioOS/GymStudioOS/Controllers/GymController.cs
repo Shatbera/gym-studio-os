@@ -24,16 +24,6 @@ namespace GymStudioOS.Controllers
             _userManager = userManager;
         }
 
-
-
-        public async Task<IActionResult> MyGyms()
-        {
-            var userId = _userManager.GetUserId(User);
-            var gyms = (await _gymRepository.GetAllAsync()).Where(g => g.OwnerId == userId).ToList();
-            return View(gyms);
-        }
-
-
         public async Task<IActionResult> Dashboard(int gymId)
         {
             var gym = await _gymRepository.GetByIdAsync(gymId);

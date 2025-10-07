@@ -4,21 +4,32 @@ using GymStudioOS.Models;
 using GymStudioOS.Models.Gym.Data;
 using GymStudioOS.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using GymStudioOS.Data;
 
 namespace GymStudioOS.Controllers
 {
     public class HomeController : Controller
     {
-    private readonly IRepository<Gym> _gymRepository;
+        private readonly IRepository<Gym> _gymRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(IRepository<Gym> gymRepository)
+        public HomeController(IRepository<Gym> gymRepository, UserManager<ApplicationUser> userManager)
         {
             _gymRepository = gymRepository;
+            _userManager = userManager;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var gyms = await _gymRepository.GetAllAsync();
+            var userId = _userManager.GetUserId(User);
+            if(userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var gyms = (await _gymRepository.GetAllAsync()).Where(g => g.OwnerId == userId).ToList();
             return View(gyms);
         }
 

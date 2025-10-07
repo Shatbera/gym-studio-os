@@ -257,10 +257,8 @@ input:focus, select:focus, textarea:focus {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  z-index: 100;
 }
 
 .sidebar-header {
@@ -361,12 +359,14 @@ input:focus, select:focus, textarea:focus {
 
 .main-content {
   flex: 1;
-  margin-left: 260px;
+  /* margin-left: 260px; */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: var(--background);
+  min-width: 0;
 }
+
 
 .main-content main {
   flex: 1;
