@@ -28,13 +28,12 @@ namespace GymStudioOS.Controllers
         {
             var gym = await _gymRepository.GetByIdAsync(gymId);
             var userId = _userManager.GetUserId(User);
-
             var isAdmin = User.IsInRole(AppRoles.Admin);
             if (gym.OwnerId != userId && !isAdmin)
             {
                 return Forbid();
             }
-
+            ViewBag.GymId = gymId;
             return View(new GymDashboardVm
             {
                 Gym = gym,

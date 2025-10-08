@@ -1,18 +1,10 @@
 <!-- Sidebar -->
 <aside class="sidebar">
-    <!-- Sidebar Header with Logo -->
-    <div class="sidebar-header">
-        <div class="sidebar-logo">
-            <img src="~/images/logo.png" alt="Corely" />
-            <span class="sidebar-brand">@GymStudioOS.Constants.AppConstants.APP_NAME</span>
-        </div>
-    </div>
-
     <!-- Sidebar Content -->
     <nav class="sidebar-content">
         <ul class="sidebar-menu">
             <li class="sidebar-menu-item">
-                <a href="@Url.Action("Index", "Home")"
+                <a href="@Url.Action("Dashboard", "Gym", new { gymId = ViewBag.GymId })"
                     class="sidebar-menu-button @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
                     style="color: inherit;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -26,7 +18,7 @@
                 </a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-button" style="color: inherit;">
+                <a href="@Url.Action("ManageMembers", "Members", new { gymId = ViewBag.GymId })" class="sidebar-menu-button" style="color: inherit;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -88,7 +80,7 @@
                 </a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="@Url.Action("ManageBranches", "Gym")"
+                <a href="@Url.Action("ManageBranches", "Gym", new { gymId = ViewBag.GymId })"
                     class="sidebar-menu-button @(ViewContext.RouteData.Values["action"]?.ToString() == "ManageBranches" ? "active" : "")"
                     style="color: inherit;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"

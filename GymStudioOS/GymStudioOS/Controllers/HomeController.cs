@@ -21,8 +21,13 @@ namespace GymStudioOS.Controllers
             _userManager = userManager;
         }
 
+        public IActionResult Index()
+        {
+            return RedirectToAction("MyGyms");
+        }
+
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> MyGyms()
         {
             var userId = _userManager.GetUserId(User);
             if(userId == null)

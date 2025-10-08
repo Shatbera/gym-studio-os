@@ -55,5 +55,15 @@ namespace GymStudioOS.Repositories
 		{
 			return await _dbSet.FirstOrDefaultAsync(predicate);
 		}
+
+		public async Task<IEnumerable<T>> Where(Expression<Func<T, bool>> predicate)
+		{
+			return await _dbSet.Where(predicate).ToListAsync();
+		}
+
+		public bool Any(Expression<Func<T, bool>> predicate)
+		{
+			return _dbSet.Any(predicate);
+		}
 	}
 }

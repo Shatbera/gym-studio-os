@@ -18,6 +18,10 @@
         var controller = ViewContext.RouteData.Values["controller"]?.ToString();
         var showSidebar = controller != "Home" && controller != "Account";
     }
+    @if (showSidebar)
+    {
+        @await Html.PartialAsync("_Navbar")
+    }
     <div class="sidebar-wrapper">
         @if (showSidebar)
         {

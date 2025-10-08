@@ -4,28 +4,4 @@
 }
 @using GymStudioOS.Constants;
 <h1 class="text-center">Welcome to @AppConstants.APP_NAME</h1>
-<h2>My Gyms</h2>
-<a class="btn btn-success mb-3" href="@Url.Action("CreateGym", "Gym")">Create Gym</a>
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Phone</th>
-			<th>Email</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var gym in Model)
-		{
-			<tr>
-				<td>@gym.Name</td>
-				<td>@gym.Phone</td>
-				<td>@gym.Email</td>
-				<td>
-					<a class="btn btn-sm btn-primary" href="@Url.Action("Dashboard", "Gym", new { gymId = gym.Id })">Manage</a>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+

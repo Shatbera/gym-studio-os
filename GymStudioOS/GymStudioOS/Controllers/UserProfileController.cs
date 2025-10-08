@@ -146,9 +146,6 @@ namespace GymStudioOS.Controllers
                         FirstName = foundProfile.FirstName,
                         LastName = foundProfile.LastName,
                         Email = foundProfile.Email,
-                        Phone = foundProfile.Phone,
-                        PersonalId = foundProfile.PersonalId,
-                        Bio = foundProfile.Bio,
                         UserId = foundProfile.UserId
                     };
                     model.ShowRegisterForm = false;

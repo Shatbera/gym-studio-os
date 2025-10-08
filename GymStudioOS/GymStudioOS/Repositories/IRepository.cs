@@ -10,5 +10,7 @@ namespace GymStudioOS.Repositories
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);
         Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> Where(Expression<Func<T, bool>> predicate);
+        bool Any(Expression<Func<T, bool>> predicate);
     }
 }

@@ -1,0 +1,166 @@
+@model GymStudioOS.Models.Gym.View.ManageMembersVm
+@{
+    ViewData["Title"] = "Members";
+}
+
+<div class="page-content">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Members</h2>
+            <p class="text-muted mb-0">Manage all members across branches</p>
+        </div>
+        <button class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Add Member
+        </button>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-subtitle">Total Members</h6>
+                <h3 class="card-title">@Model.TotalMembers</h3>
+                <small class="text-muted">Across all branches</small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-subtitle">Active Members</h6>
+                <h3 class="card-title">@Model.ActiveMembers</h3>
+                <small class="text-muted">Currently active memberships</small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-subtitle">New This Month</h6>
+                <h3 class="card-title">@Model.NewThisMonth</h3>
+                <small>
+                    @if (Model.NewMembersGrowthPercent >= 0)
+                    {
+                        <span class="text-success">+@Model.NewMembersGrowthPercent%</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">@Model.NewMembersGrowthPercent%</span>
+                    }
+                    <span class="text-muted"> from last month</span>
+                </small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-subtitle">Retention Rate</h6>
+                <h3 class="card-title">@Model.RetentionRate.ToString("F1")%</h3>
+                <small class="text-muted">12-month average</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Members Directory -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h5 class="mb-1">Members Directory</h5>
+                    <p class="text-muted mb-0">Search and manage your gym members</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="position-relative">
+                        <input type="text" class="form-control" placeholder="Search members..."
+                            style="padding-left: 2.5rem; width: 250px;">
+                        <i class="fas fa-search position-absolute"
+                            style="left: 0.75rem; top: 50%; transform: translateY(-50%); color: #6c757d;"></i>
+                    </div>
+                    <select class="form-select" style="width: auto;">
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Suspended</option>
+                        <option>Expired</option>
+                    </select>
+                    <select class="form-select" style="width: auto;">
+                        <option>All Types</option>
+                        <option>Premium</option>
+                        <option>Standard</option>
+                        <option>Basic</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Members Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Contact</th>
+                            <th>Membership</th>
+                            <th>Status</th>
+                            <th>Branch</th>
+                            <th>Last Visit</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Members?.Any() == true)
+                        {
+                            @foreach (GymStudioOS.Models.Gym.View.UserProfileListItemVm member in Model.Members)
+                            {
+                                var initials = member.FullName.Length > 0 ? string.Join("", member.FullName.Split(' ').Select(n
+                                => n.FirstOrDefault())).ToUpper() : "";
+                                var colors = new[] { "bg-primary", "bg-success", "bg-warning", "bg-danger", "bg-info",
+                                                "bg-secondary" };
+                                var colorIndex = Math.Abs(member.UserId.GetHashCode()) % colors.Length;
+                                var avatarColor = colors[colorIndex];
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="@avatarColor text-white rounded-circle d-flex align-items-center justify-content-center me-3 member-avatar">
+                                                @initials
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold">@member.FullName</div>
+                                                <small class="text-muted">Member since
+                                                    @member.JoinedAt.ToString("M/d/yyyy")</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div><i class="fas fa-envelope text-muted me-2"></i>@member.Email</div>
+                                            <div><i class="fas fa-phone text-muted me-2"></i>@member.PhoneNumber</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info text-white">@member.MembershipType</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success">@member.MembershipStatus</span>
+                                    </td>
+                                    <td>@member.BranchName</td>
+                                    <td>@member.LastVisit.ToString("M/d/yyyy")</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="fas fa-users fa-3x mb-3 d-block"></i>
+                                    <h5>No members found</h5>
+                                    <p>Start by adding your first gym member.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
