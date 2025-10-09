@@ -12,6 +12,7 @@
 
   --primary: #0EA5E9;
   --primary-foreground: #ffffff;
+  --primary-hover: #0284c7;
 
   --secondary: #f1f5f9;
   --secondary-foreground: #1f2937;
@@ -54,6 +55,7 @@
 
   --primary: #0EA5E9;
   --primary-foreground: #ffffff;
+  --primary-hover: #0284c7;
 
   --secondary: #1F2937;
   --secondary-foreground: #f1f5f9;
@@ -178,13 +180,31 @@ input {
 
 /* Buttons */
 .btn {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.2rem;
+  gap: 0.75rem;
+  height: 36px;
+  border-radius: 999px;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   border: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-icon {
+  padding: 0;
+  width: 36px;
+  border-radius: 14px;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.btn-icon:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .btn-primary {
@@ -193,7 +213,7 @@ input {
 }
 
 .btn-primary:hover {
-  background-color: #0284c7;
+  background-color: var(--primary-hover);
 }
 
 .btn-secondary {
@@ -202,17 +222,36 @@ input {
 }
 
 .btn-secondary:hover {
-  background-color: #e2e8f0;
+  background-color: var(--secondary-foreground);
+  color: var(--secondary);
 }
 
 /* Accent buttons */
 .btn-accent {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+
+.btn-accent:hover {
   background-color: var(--accent);
   color: var(--accent-foreground);
 }
 
-.btn-accent:hover {
-  background-color: #16a34a;
+.theme-icon-dark {
+  display: none;
+}
+
+.theme-icon-light {
+  display: inline;
+}
+
+body.dark-mode .theme-icon-dark {
+  display: inline;
+}
+
+body.dark-mode .theme-icon-light {
+  display: none;
 }
 
 /* Inputs */
@@ -292,7 +331,27 @@ textarea:focus {
   width: var(--sidebar-width);
   display: flex;
   padding-left: 1.5rem;
+}
+
+.navbar-header-bordered {
   border-right: 1px solid var(--border);
+}
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  min-width: 0;
+  padding-right: 2rem;
 }
 
 .navbar-logo {
